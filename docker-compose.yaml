@@ -5,19 +5,17 @@ services:
     ports:
       - 8000:8000
     hostname: tubes-soap-service
-    # env_file: .env
+    env_file: .env
     volumes:
       - .:/usr/src/app
-#   mysql:
-#     image: mysql:latest
-#     ports:
-#       - "3307:3306"
-#     # env_file: .env
-#     hostname: db-soap-service
-#     volumes:
-#       - ./db:/var/lib/mysql
-#     networks:
-#       - soap-services
-# volumes:
-#   db:
-#     driver: local
+    depends_on:
+      - soap-service-db
+  soap-service-db:
+    image: mysql:latest
+    ports:
+      - "3307:3306"
+    env_file: .env
+    hostname: tubes-soap-db
+volumes:
+  db:
+    driver: local

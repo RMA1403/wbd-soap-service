@@ -3,5 +3,5 @@
   <endpoint
     name="SubscriptionWebService"
     implementation="soapserver.SubscriptionService"
-    url-pattern="/api/subscribe" />
+    url-pattern="/subscription" />
 </endpoints>
