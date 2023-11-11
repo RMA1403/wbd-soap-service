@@ -3,8 +3,6 @@ package soapserver.handlers;
 import java.io.ByteArrayOutputStream;
 import java.util.Collections;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.namespace.QName;
