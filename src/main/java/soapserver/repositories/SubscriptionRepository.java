@@ -3,7 +3,6 @@ package soapserver.repositories;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TimeZone;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;

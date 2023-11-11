@@ -7,7 +7,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import io.github.cdimascio.dotenv.Dotenv;
-
+import soapserver.models.Log;
 import soapserver.models.Subscription;
 
 public class HibernateUtil {
@@ -36,6 +36,7 @@ public class HibernateUtil {
     Configuration configuration = new Configuration();
     configuration.setProperties(properties);
     configuration.addAnnotatedClass(Subscription.class);
+    configuration.addAnnotatedClass(Log.class);
 
     ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties())
         .build();

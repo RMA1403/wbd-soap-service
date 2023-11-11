@@ -2,6 +2,6 @@
 <endpoints xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime" version="2.0">
   <endpoint
     name="SubscriptionWebService"
-    implementation="soapserver.SubscriptionService"
+    implementation="soapserver.services.SubscriptionService"
     url-pattern="/subscription" />
 </endpoints>

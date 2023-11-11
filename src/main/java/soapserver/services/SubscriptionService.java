@@ -1,17 +1,18 @@
-package soapserver;
+package soapserver.services;
 
+import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
-// import javax.jws.WebParam;
+import javax.jws.WebParam;
 import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
 
 import soapserver.repositories.SubscriptionRepository;
 
 @WebService
-@SOAPBinding(style = SOAPBinding.Style.DOCUMENT)
+@HandlerChain(file = "handler-chain.xml")
 public class SubscriptionService {
   private SubscriptionRepository subscriptionRepo = new SubscriptionRepository();
 
+  // ! Delete this method later
   @WebMethod
   public String hello() {
     System.out.println("WOJWEKEJWFJEIF");
@@ -20,12 +21,12 @@ public class SubscriptionService {
   }
 
   @WebMethod
-  public String checkSubscription(int id_user) {
+  public String checkSubscription(
+      @WebParam(name = "idUser") int idUser) {
     try {
-      System.out.println(id_user);
-      System.out.println(subscriptionRepo.isSubscribed(id_user));
+      boolean subscribed = subscriptionRepo.isSubscribed(idUser);
 
-      return "wowowowo";
+      return subscribed ? "subscribed" : "not subscribed";
     } catch (Exception e) {
       System.out.println(e.getMessage());
       return e.getMessage();

@@ -12,13 +12,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "subscriptions")
+@Table(name = "logs")
 @Getter
 @Setter
-public class Subscription implements Serializable {
+public class Log implements Serializable {
   @Id
-  private Integer id_user;
-
   @Basic
-  private Timestamp expiration_date;
+  private Timestamp time;
+
+  @Id
+  private String host;
 }
