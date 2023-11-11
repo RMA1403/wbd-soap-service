@@ -13,7 +13,7 @@ services:
   soap-service-db:
     image: mysql:latest
     ports:
-      - "3307:3306"
+      - 3307:3306
     env_file: .env
     hostname: tubes-soap-db
 volumes:

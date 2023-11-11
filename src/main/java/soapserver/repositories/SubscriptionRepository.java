@@ -68,10 +68,9 @@ public class SubscriptionRepository {
         return false;
       }
 
+      // Check expiration time
       Timestamp expirationDate = userSubscription.getExpiration_date();
       Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-      System.out.println(expirationDate);
-      System.out.println(currentTime);
       if (expirationDate.compareTo(currentTime) < 0) {
         return false;
       }

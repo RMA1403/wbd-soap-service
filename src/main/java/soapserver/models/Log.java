@@ -21,5 +21,9 @@ public class Log implements Serializable {
   private Timestamp time;
 
   @Id
-  private String host;
+  private String origin;
+
+  private String method;
+
+  private String description;
 }
