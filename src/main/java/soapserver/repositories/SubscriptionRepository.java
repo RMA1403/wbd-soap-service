@@ -92,7 +92,7 @@ public class SubscriptionRepository {
       for (int i = 0; i < 100; i++) {
         Subscription subscription = new Subscription();
         subscription.setId_user(i + 1);
-        subscription.setExpiration_date(new Timestamp(System.currentTimeMillis() + (1000 * 60)));
+        subscription.setExpiration_date(new Timestamp(System.currentTimeMillis() + (1000 * 60 * 60)));
         session.save(subscription);
       }
 
