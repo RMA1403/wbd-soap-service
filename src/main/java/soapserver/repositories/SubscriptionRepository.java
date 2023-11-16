@@ -89,9 +89,9 @@ public class SubscriptionRepository {
 
       session.beginTransaction();
 
-      for (int i = 0; i < 100; i++) {
+      for (int i = 201; i <= 300; i++) {
         Subscription subscription = new Subscription();
-        subscription.setId_user(i + 1);
+        subscription.setId_user(i);
         subscription.setExpiration_date(new Timestamp(System.currentTimeMillis() + (1000 * 60 * 60)));
         session.save(subscription);
       }
