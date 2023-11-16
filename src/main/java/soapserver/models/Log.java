@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -17,10 +19,12 @@ import lombok.Setter;
 @Setter
 public class Log implements Serializable {
   @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private int id;
+
   @Basic
   private Timestamp time;
 
-  @Id
   private String origin;
 
   private String method;
