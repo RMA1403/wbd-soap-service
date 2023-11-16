@@ -44,4 +44,17 @@ public class SubscriptionService {
       return "error";
     }
   }
+
+  @WebMethod
+  public String addSubscription(
+    @WebParam(name = "idUser") int idUser) {
+      try {
+        boolean success = subscriptionRepo.addSubscription(idUser);
+
+        return success? "success" : "failed";
+      } catch (Exception e) {
+        System.out.println(e.getMessage());
+        return "error";
+      }
+  }
 }

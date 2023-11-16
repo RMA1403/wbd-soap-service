@@ -104,4 +104,23 @@ public class SubscriptionRepository {
       return false;
     }
   }
+
+  public boolean addSubscription(int idUser) {
+    try {
+      SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+      Session session = sessionFactory.getCurrentSession();
+
+      session.beginTransaction();
+      Subscription subscription = new Subscription();
+      subscription.setId_user(idUser);
+      subscription.setExpiration_date(new Timestamp(System.currentTimeMillis() + (1000 * 60 * 60)));
+      session.save(subscription);
+
+      session.getTransaction().commit();
+      return true;
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      return false;
+    }
+  }
 }
