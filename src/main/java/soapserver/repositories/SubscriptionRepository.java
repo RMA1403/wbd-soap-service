@@ -91,8 +91,8 @@ public class SubscriptionRepository {
 
       for (int i = 201; i <= 300; i++) {
         Subscription subscription = new Subscription();
-        subscription.setId_user(i);
-        subscription.setExpiration_date(new Timestamp(System.currentTimeMillis() + (1000 * 60 * 60)));
+        subscription.setId_user(i + 1);
+        subscription.setExpiration_date(new Timestamp(System.currentTimeMillis() + (1000 * 60 * 600)));
         session.save(subscription);
       }
 
@@ -117,6 +117,81 @@ public class SubscriptionRepository {
       session.save(subscription);
 
       session.getTransaction().commit();
+      return true;
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      return false;
+    }
+  }
+  
+  public String getExpired(int idUser) {
+    try {
+      SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+      Session session = sessionFactory.getCurrentSession();
+
+      session.beginTransaction();
+
+      CriteriaBuilder builder = session.getCriteriaBuilder();
+      CriteriaQuery<Subscription> criteria = builder.createQuery(Subscription.class);
+      Root<Subscription> root = criteria.from(Subscription.class);
+      criteria.select(root).where(builder.equal(root.get("id_user"), idUser));
+
+      List<Subscription> userSubData = session.createQuery(criteria).getResultList();
+
+      session.getTransaction().commit();
+
+      if (userSubData.size() <= 0) {
+        return "not subscribed";
+      }
+
+      Subscription userSubscription = userSubData.get(0);
+      if (userSubscription == null) {
+        return "not subscribed";
+      }
+
+      // Check expiration time
+      Timestamp expirationDate = userSubscription.getExpiration_date();
+
+      return expirationDate.toString();
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      return "error";
+    }
+  }
+
+
+  public boolean extendSubscription(int idUser, int duration) {
+    try {
+      SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+      Session session = sessionFactory.getCurrentSession();
+
+      session.beginTransaction();
+
+      CriteriaBuilder builder = session.getCriteriaBuilder();
+      CriteriaQuery<Subscription> criteria = builder.createQuery(Subscription.class);
+      Root<Subscription> root = criteria.from(Subscription.class);
+      criteria.select(root).where(builder.equal(root.get("id_user"), idUser));
+
+      List<Subscription> userSubData = session.createQuery(criteria).getResultList();
+
+      session.getTransaction().commit();
+
+      if (userSubData.size() <= 0) {
+        return false;
+      }
+
+      Subscription userSubscription = userSubData.get(0);
+      if (userSubscription == null) {
+        return false;
+      }
+
+      Timestamp expirationDate = userSubscription.getExpiration_date();
+
+      // extend expiration date
+      userSubscription.setExpiration_date(new Timestamp(expirationDate.getTime() + duration ));
+      session.save(userSubscription);
+      session.getTransaction().commit();
+
       return true;
     } catch (Exception e) {
       System.out.println(e.getMessage());

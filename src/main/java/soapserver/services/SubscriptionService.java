@@ -32,12 +32,12 @@ public class SubscriptionService {
       return e.getMessage();
     }
   }
-
+  
   @WebMethod
   public String seedSubscription() {
     try {
       boolean success = subscriptionRepo.seedSubscription();
-
+      
       return success ? "success" : "seeding failed";
     } catch (Exception e) {
       System.out.println(e.getMessage());
@@ -56,5 +56,34 @@ public class SubscriptionService {
         System.out.println(e.getMessage());
         return "error";
       }
+  }
+  
+  @WebMethod
+  public String getExpired(
+      @WebParam(name = "idUser") int idUser
+    ) {
+    try {
+      String expiredDate = subscriptionRepo.getExpired(idUser);
+  
+      return expiredDate;
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      return e.getMessage();
+    }
+  }
+  
+  @WebMethod
+  public String extendSubscription(
+      @WebParam(name = "idUser") int idUser,
+      @WebParam(name = "duration") int duration
+    ) {
+    try {
+      boolean extended = subscriptionRepo.extendSubscription(idUser, duration);
+  
+      return extended ? "extended success" : "extended failed";
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      return e.getMessage();
+    }
   }
 }
