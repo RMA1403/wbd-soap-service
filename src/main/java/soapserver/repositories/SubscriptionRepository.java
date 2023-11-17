@@ -74,6 +74,8 @@ public class SubscriptionRepository {
       Timestamp expirationDate = userSubscription.getExpiration_date();
       Timestamp currentTime = new Timestamp(System.currentTimeMillis());
       if (expirationDate.compareTo(currentTime) < 0) {
+        this.deleteSubscription(idUser);
+
         return false;
       }
 
@@ -93,7 +95,7 @@ public class SubscriptionRepository {
 
       for (int i = 201; i <= 300; i++) {
         Subscription subscription = new Subscription();
-        subscription.setId_user(i + 1);
+        subscription.setId_user(i);
         subscription.setExpiration_date(new Timestamp(System.currentTimeMillis() + (1000 * 60 * 600)));
         session.save(subscription);
       }
@@ -201,6 +203,32 @@ public class SubscriptionRepository {
 
       return true;
     } catch (Exception e) {
+      System.out.println(e.getMessage());
+      return false;
+    }
+  }
+
+  public boolean deleteSubscription(int idUser) {
+    try {
+      SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+      Session session = sessionFactory.getCurrentSession();
+
+      session.beginTransaction();
+
+      Subscription subscription = session.find(Subscription.class, idUser);
+      session.remove(subscription);
+      session.flush();
+      session.clear();
+
+      session.getTransaction().commit();
+
+      return true;
+    } catch (Exception e) {
+      SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+      Session session = sessionFactory.getCurrentSession();
+
+      session.getTransaction().commit();
+
       System.out.println(e.getMessage());
       return false;
     }
