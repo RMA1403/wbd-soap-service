@@ -64,7 +64,7 @@ public class SubscriptionService {
     ) {
     try {
       String expiredDate = subscriptionRepo.getExpired(idUser);
-  
+      
       return expiredDate;
     } catch (Exception e) {
       System.out.println(e.getMessage());
@@ -74,11 +74,10 @@ public class SubscriptionService {
   
   @WebMethod
   public String extendSubscription(
-      @WebParam(name = "idUser") int idUser,
-      @WebParam(name = "duration") int duration
+      @WebParam(name = "idUser") int idUser
     ) {
     try {
-      boolean extended = subscriptionRepo.extendSubscription(idUser, duration);
+      boolean extended = subscriptionRepo.extendSubscription(idUser);
   
       return extended ? "extended success" : "extended failed";
     } catch (Exception e) {

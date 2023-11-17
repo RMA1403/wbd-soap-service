@@ -1,7 +1,9 @@
 package soapserver.repositories;
 
 import java.sql.Timestamp;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -123,7 +125,7 @@ public class SubscriptionRepository {
       return false;
     }
   }
-  
+
   public String getExpired(int idUser) {
     try {
       SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
@@ -151,8 +153,17 @@ public class SubscriptionRepository {
 
       // Check expiration time
       Timestamp expirationDate = userSubscription.getExpiration_date();
+      
+      //Getting the calendar class instance
+      Calendar calendar = Calendar.getInstance();
 
-      return expirationDate.toString();
+      // Passing the long value to calendar class function
+      calendar.setTimeInMillis(expirationDate.getTime());
+      
+      DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd 'at' hh:mm a");
+      String dateToString = df.format(expirationDate.toLocalDateTime());
+
+      return dateToString;
     } catch (Exception e) {
       System.out.println(e.getMessage());
       return "error";
@@ -160,7 +171,7 @@ public class SubscriptionRepository {
   }
 
 
-  public boolean extendSubscription(int idUser, int duration) {
+  public boolean extendSubscription(int idUser) {
     try {
       SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
       Session session = sessionFactory.getCurrentSession();
@@ -174,8 +185,6 @@ public class SubscriptionRepository {
 
       List<Subscription> userSubData = session.createQuery(criteria).getResultList();
 
-      session.getTransaction().commit();
-
       if (userSubData.size() <= 0) {
         return false;
       }
@@ -185,10 +194,8 @@ public class SubscriptionRepository {
         return false;
       }
 
-      Timestamp expirationDate = userSubscription.getExpiration_date();
-
       // extend expiration date
-      userSubscription.setExpiration_date(new Timestamp(expirationDate.getTime() + duration ));
+      userSubscription.setExpiration_date(new Timestamp(System.currentTimeMillis() + (1000 * 60 * 60)) );
       session.save(userSubscription);
       session.getTransaction().commit();
 
