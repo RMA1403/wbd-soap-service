@@ -9,6 +9,9 @@ Web Service pada repository ini merupakan service yang dibangun dengan protokol 
 ## Endpoint API 
 
 ## Pembagian Tugas
-Check Subscription  : 13521149
-Add Subscription    : 13521079
-Extend Subscription : 13521119
+Check Subscription  : 13521149  
+Logging             : 13521149
+Seeding             : 13521149
+Add Subscription    : 13521079  
+Extend Subscription : 13521119 
+Get Expiration Time : 13521119 
