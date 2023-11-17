@@ -105,6 +105,42 @@ public class SubscriptionRepository {
     }
   }
 
+  public String getExpired(int idUser) {
+    try {
+      SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+      Session session = sessionFactory.getCurrentSession();
+
+      session.beginTransaction();
+
+      CriteriaBuilder builder = session.getCriteriaBuilder();
+      CriteriaQuery<Subscription> criteria = builder.createQuery(Subscription.class);
+      Root<Subscription> root = criteria.from(Subscription.class);
+      criteria.select(root).where(builder.equal(root.get("id_user"), idUser));
+
+      List<Subscription> userSubData = session.createQuery(criteria).getResultList();
+
+      session.getTransaction().commit();
+
+      if (userSubData.size() <= 0) {
+        return "not subscribed";
+      }
+
+      Subscription userSubscription = userSubData.get(0);
+      if (userSubscription == null) {
+        return "not subscribed";
+      }
+
+      // Check expiration time
+      Timestamp expirationDate = userSubscription.getExpiration_date();
+
+      return expirationDate.toString();
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      return "error";
+    }
+  }
+
+
   public boolean extendSubscription(int idUser, int duration) {
     try {
       SessionFactory sessionFactory = HibernateUtil.getSessionFactory();

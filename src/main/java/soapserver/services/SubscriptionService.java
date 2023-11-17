@@ -44,6 +44,20 @@ public class SubscriptionService {
       return "error";
     }
   }
+
+    @WebMethod
+  public String getExpired(
+      @WebParam(name = "idUser") int idUser
+    ) {
+    try {
+      String expiredDate = subscriptionRepo.getExpired(idUser);
+  
+      return expiredDate;
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      return e.getMessage();
+    }
+  }
   
   @WebMethod
   public String extendSubscription(
@@ -59,5 +73,4 @@ public class SubscriptionService {
       return e.getMessage();
     }
   }
-  
 }
